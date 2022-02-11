@@ -58,5 +58,5 @@ generate_button.grid(column=2, row=3)
 
 # ---------------------------- TODO: PASSWORD GENERATOR LOGIC ------------------------------- #
 # TODO: implement a function responsible for creating a password with a preset strength
-
+window.eval('tk::PlaceWindow . center')
 window.mainloop()
