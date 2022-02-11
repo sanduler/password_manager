@@ -16,6 +16,22 @@ logo = PhotoImage(file="img/logo.png")
 canvas.create_image(200, 200, image=logo)
 canvas.pack()
 # TODO: develop a text input column for typing the website that will be used to save the password
+web_label = Label(text="Website:")
+web_label.pack()
+web_entry = Entry()
+web_entry.pack()
+username_label = Label(text="Email/Username:")
+username_label.pack()
+username_entry = Entry()
+username_entry.pack()
+password_label = Label(text="Password: ")
+password_label.pack()
+password_entry = Entry()
+password_entry.pack()
+add_button = Button(text="Add")
+add_button.pack()
+add_button = Button(text="Generate Password",)
+add_button.pack()
 # TODO: implement an input column for the email address/username that
 # TODO: implement an input column for password
 # TODO: make sure the password field is hidden
