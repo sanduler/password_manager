@@ -29,6 +29,8 @@ username_label = Label(text="Email/Username:")
 username_label.grid(column=0, row=2)
 username_entry = Entry()
 username_entry.config(width=37)
+# at the start the program automatically starts the input at the username
+username_entry.focus()
 username_entry.grid(column=1, row=2, columnspan=2)
 
 # TODO: implement an input column for password
