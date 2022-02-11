@@ -2,8 +2,31 @@
 # Description:
 from tkinter import *
 import tkinter.messagebox
+import pyperclip
+from random import choice, randint, shuffle
 
 WINDOW_NAME = "Password Manager"
+
+
+def generate_password():
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
+               'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+               'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+
+    password_entry.delete(0, END)
+
+    password_letters = [choice(letters) for _ in range(randint(8, 10))]
+    password_symbols = [choice(symbols) for _ in range(randint(2, 4))]
+    password_numbers = [choice(numbers) for _ in range(randint(2, 4))]
+
+    password_list = password_letters + password_symbols + password_numbers
+    shuffle(password_list)
+
+    password = "".join(password_list)
+    password_entry.insert(0, password)
+    pyperclip.copy(password)
 
 
 def clear_entry():
@@ -63,7 +86,7 @@ username_entry.grid(column=1, row=2, columnspan=2)
 password_label = Label(text="Password: ")
 password_label.grid(column=0, row=3)
 password_entry = Entry()
-password_entry.config(width=21, show="*")
+password_entry.config(width=21)
 password_entry.grid(column=1, row=3)
 
 # TODO: implement a button on the bottom to save the password externally --> if possible to text
@@ -72,7 +95,7 @@ add_button.config(width=35)
 add_button.grid(column=1, row=4, columnspan=2)
 
 # TODO: implement a button next to the password generate a new password
-generate_button = Button(text="Generate Password", )
+generate_button = Button(text="Generate Password", command=generate_password)
 generate_button.config(width=11, pady=0)
 generate_button.grid(column=2, row=3)
 
