@@ -1,9 +1,34 @@
 # Name: Ruben Sanduleac
 # Description:
 from tkinter import *
-from tkinter.tix import WINDOW
+import tkinter.messagebox
 
 WINDOW_NAME = "Password Manager"
+
+
+def clear_entry():
+    web_entry.delete(0, END)
+    username_entry.delete(0, END)
+    password_entry.delete(0, END)
+
+
+def save():
+    password_string = password_entry.get()
+    username_string = username_entry.get()
+    website_string = web_entry.get()
+    if len(website_string) != 0 and len(username_string) != 0 and len(password_string) != 0:
+        tkinter.messagebox.askokcancel(message=f"These are the details entered: "
+                                               f"\nUsername: {username_string}\nPassword: {password_string}")
+        file = open("data/passwords.txt", "a")
+        file.write(f" {website_string} | {username_string} | {password_string}\n")
+        file.close()
+        tkinter.messagebox.showinfo(message=f"Password for {website_string} was saved.")
+    else:
+        tkinter.messagebox.showwarning(message="Please enter all the required information.")
+
+    clear_entry()
+
+
 # ------------------------------------ TODO: UI ---------------------------------------
 # TODO: develop a window for the program
 window = Tk()
@@ -29,6 +54,8 @@ username_label = Label(text="Email/Username:")
 username_label.grid(column=0, row=2)
 username_entry = Entry()
 username_entry.config(width=37)
+# at the start the program automatically starts the input at the username
+username_entry.focus()
 username_entry.grid(column=1, row=2, columnspan=2)
 
 # TODO: implement an input column for password
@@ -40,12 +67,12 @@ password_entry.config(width=21, show="*")
 password_entry.grid(column=1, row=3)
 
 # TODO: implement a button on the bottom to save the password externally --> if possible to text
-add_button = Button(text="Add")
+add_button = Button(text="Add", command=save)
 add_button.config(width=35)
 add_button.grid(column=1, row=4, columnspan=2)
 
 # TODO: implement a button next to the password generate a new password
-generate_button = Button(text="Generate Password",)
+generate_button = Button(text="Generate Password", )
 generate_button.config(width=11, pady=0)
 generate_button.grid(column=2, row=3)
 
@@ -55,8 +82,7 @@ generate_button.grid(column=2, row=3)
 # TODO: implement a function responsible for input column for the password field
 # TODO: implement a function responsible for "generate new password" button
 # TODO: implement a function responsible for "add" button
-
 # ---------------------------- TODO: PASSWORD GENERATOR LOGIC ------------------------------- #
 # TODO: implement a function responsible for creating a password with a preset strength
-
+window.eval('tk::PlaceWindow . center')
 window.mainloop()
