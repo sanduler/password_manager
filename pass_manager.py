@@ -3,19 +3,22 @@
 from tkinter import *
 import tkinter.messagebox
 
-import website as website
-
 WINDOW_NAME = "Password Manager"
+
 
 def clear_entry():
     web_entry.delete(0, END)
     username_entry.delete(0, END)
     password_entry.delete(0, END)
+
+
 def save():
     password_string = password_entry.get()
     username_string = username_entry.get()
     website_string = web_entry.get()
-    if len(website_string) != 0 and len(username_string) != 0 and len(password_string) !=0:
+    if len(website_string) != 0 and len(username_string) != 0 and len(password_string) != 0:
+        tkinter.messagebox.askokcancel(message=f"These are the details entered: "
+                                               f"\nUsername: {username_string}\nPassword: {password_string}")
         file = open("data/passwords.txt", "a")
         file.write(f" {website_string} | {username_string} | {password_string}\n")
         file.close()
@@ -24,6 +27,8 @@ def save():
         tkinter.messagebox.showwarning(message="Please enter all the required information.")
 
     clear_entry()
+
+
 # ------------------------------------ TODO: UI ---------------------------------------
 # TODO: develop a window for the program
 window = Tk()
@@ -70,7 +75,6 @@ add_button.grid(column=1, row=4, columnspan=2)
 generate_button = Button(text="Generate Password", )
 generate_button.config(width=11, pady=0)
 generate_button.grid(column=2, row=3)
-
 
 # ------------------------------------ TODO: SAVE PASSWORD ---------------------------------------
 # TODO: implement a function responsible for text input column for typing the website
