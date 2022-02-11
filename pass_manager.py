@@ -1,25 +1,26 @@
-# Name: Ruben Sanduleac
-# Description:
 from tkinter import *
 import tkinter.messagebox
 from generate_password import generate_password
 
+# Name: Ruben Sanduleac
+# Description:
+
 WINDOW_NAME = "Password Manager"
-web_entry = None
-username_entry = None
-password_entry = None
+WEB_ENTRY = None
+USERNAME_ENTRY = None
+PASSWORD_ENTRY = None
 
 
 def clear_entry():
-    web_entry.delete(0, END)
-    username_entry.delete(0, END)
-    password_entry.delete(0, END)
+    WEB_ENTRY.delete(0, END)
+    USERNAME_ENTRY.delete(0, END)
+    PASSWORD_ENTRY.delete(0, END)
 
 
 def save():
-    password_string = password_entry.get()
-    username_string = username_entry.get()
-    website_string = web_entry.get()
+    password_string = PASSWORD_ENTRY.get()
+    username_string = USERNAME_ENTRY.get()
+    website_string = WEB_ENTRY.get()
     if len(website_string) != 0 and len(username_string) != 0 and len(password_string) != 0:
         tkinter.messagebox.askokcancel(message=f"These are the details entered: "
                                                f"\nUsername: {username_string}\nPassword: {password_string}")
@@ -35,7 +36,7 @@ def save():
 
 def generate__button():
     # create the button for generating a password
-    generate_button = Button(text="Generate Password", command=lambda: generate_password(password_entry))
+    generate_button = Button(text="Generate Password", command=lambda: generate_password(PASSWORD_ENTRY))
     generate_button.config(width=11, pady=0)
     generate_button.grid(column=2, row=3)
 
@@ -57,14 +58,14 @@ def main_window_labels():
 
 
 def entry_config():
-    web_entry.config(width=37)
-    web_entry.grid(column=1, row=1, columnspan=2)
-    password_entry.config(width=21)
-    password_entry.grid(column=1, row=3)
-    username_entry.config(width=37)
+    WEB_ENTRY.config(width=37)
+    WEB_ENTRY.grid(column=1, row=1, columnspan=2)
+    PASSWORD_ENTRY.config(width=21)
+    PASSWORD_ENTRY.grid(column=1, row=3)
+    USERNAME_ENTRY.config(width=37)
     # at the start the program automatically starts the input at the username
-    username_entry.focus()
-    username_entry.grid(column=1, row=2, columnspan=2)
+    USERNAME_ENTRY.focus()
+    USERNAME_ENTRY.grid(column=1, row=2, columnspan=2)
 
 
 def main():
@@ -78,13 +79,13 @@ def main():
     canvas.create_image(75, 100, image=logo)
     # canvas.config(bg="blue")
     canvas.grid(column=1, row=0, columnspan=2)
-    # labels found on the mainwindow
+    # labels found on the main window
     main_window_labels()
     # objects for the website, username and password that will be used to save the info
-    global web_entry, username_entry, password_entry
-    web_entry = Entry()
-    username_entry = Entry()
-    password_entry = Entry()
+    global WEB_ENTRY, USERNAME_ENTRY, PASSWORD_ENTRY
+    WEB_ENTRY = Entry()
+    USERNAME_ENTRY = Entry()
+    PASSWORD_ENTRY = Entry()
     # configure the location of entries in the
     entry_config()
     # function call for the "add" a button
