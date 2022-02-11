@@ -1,44 +1,26 @@
-# Name: Ruben Sanduleac
-# Description:
 from tkinter import *
 import tkinter.messagebox
-import pyperclip
-from random import choice, randint, shuffle
+from generate_password import generate_password
+
+# Name: Ruben Sanduleac
+# Description:
 
 WINDOW_NAME = "Password Manager"
-
-
-def generate_password():
-    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
-               'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-               'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
-
-    password_entry.delete(0, END)
-
-    password_letters = [choice(letters) for _ in range(randint(8, 10))]
-    password_symbols = [choice(symbols) for _ in range(randint(2, 4))]
-    password_numbers = [choice(numbers) for _ in range(randint(2, 4))]
-
-    password_list = password_letters + password_symbols + password_numbers
-    shuffle(password_list)
-
-    password = "".join(password_list)
-    password_entry.insert(0, password)
-    pyperclip.copy(password)
+WEB_ENTRY = None
+USERNAME_ENTRY = None
+PASSWORD_ENTRY = None
 
 
 def clear_entry():
-    web_entry.delete(0, END)
-    username_entry.delete(0, END)
-    password_entry.delete(0, END)
+    WEB_ENTRY.delete(0, END)
+    USERNAME_ENTRY.delete(0, END)
+    PASSWORD_ENTRY.delete(0, END)
 
 
 def save():
-    password_string = password_entry.get()
-    username_string = username_entry.get()
-    website_string = web_entry.get()
+    password_string = PASSWORD_ENTRY.get()
+    username_string = USERNAME_ENTRY.get()
+    website_string = WEB_ENTRY.get()
     if len(website_string) != 0 and len(username_string) != 0 and len(password_string) != 0:
         tkinter.messagebox.askokcancel(message=f"These are the details entered: "
                                                f"\nUsername: {username_string}\nPassword: {password_string}")
@@ -52,60 +34,69 @@ def save():
     clear_entry()
 
 
-# ------------------------------------ TODO: UI ---------------------------------------
-# TODO: develop a window for the program
-window = Tk()
-window.title(WINDOW_NAME)
-window.config(padx=20, pady=20)
-# TODO: implement a canvas for the logo
-canvas = Canvas(width=200, height=200)
-# TODO: link canvas logo to the window
-logo = PhotoImage(file="img/logo.png")
-canvas.create_image(75, 100, image=logo)
-# canvas.config(bg="blue")
-canvas.grid(column=1, row=0, columnspan=2)
+def generate__button():
+    # create the button for generating a password
+    generate_button = Button(text="Generate Password", command=lambda: generate_password(PASSWORD_ENTRY))
+    generate_button.config(width=11, pady=0)
+    generate_button.grid(column=2, row=3)
 
-# TODO: develop a text input column for typing the website that will be used to save the password
-web_label = Label(text="Website:")
-web_label.grid(column=0, row=1)
-web_entry = Entry()
-web_entry.config(width=37)
-web_entry.grid(column=1, row=1, columnspan=2)
 
-# TODO: implement an input column for the email address/username that
-username_label = Label(text="Email/Username:")
-username_label.grid(column=0, row=2)
-username_entry = Entry()
-username_entry.config(width=37)
-# at the start the program automatically starts the input at the username
-username_entry.focus()
-username_entry.grid(column=1, row=2, columnspan=2)
+def write_buttton():
+    """a button on the bottom to save the password externally --> if possible to text"""
+    add_button = Button(text="Add", command=save)
+    add_button.config(width=35)
+    add_button.grid(column=1, row=4, columnspan=2)
 
-# TODO: implement an input column for password
-# TODO: make sure the password field is hidden
-password_label = Label(text="Password: ")
-password_label.grid(column=0, row=3)
-password_entry = Entry()
-password_entry.config(width=21)
-password_entry.grid(column=1, row=3)
 
-# TODO: implement a button on the bottom to save the password externally --> if possible to text
-add_button = Button(text="Add", command=save)
-add_button.config(width=35)
-add_button.grid(column=1, row=4, columnspan=2)
+def main_window_labels():
+    web_label = Label(text="Website:")
+    web_label.grid(column=0, row=1)
+    username_label = Label(text="Email/Username:")
+    username_label.grid(column=0, row=2)
+    password_label = Label(text="Password: ")
+    password_label.grid(column=0, row=3)
 
-# TODO: implement a button next to the password generate a new password
-generate_button = Button(text="Generate Password", command=generate_password)
-generate_button.config(width=11, pady=0)
-generate_button.grid(column=2, row=3)
 
-# ------------------------------------ TODO: SAVE PASSWORD ---------------------------------------
-# TODO: implement a function responsible for text input column for typing the website
-# TODO: implement a function responsible for input column for the email address/username
-# TODO: implement a function responsible for input column for the password field
-# TODO: implement a function responsible for "generate new password" button
-# TODO: implement a function responsible for "add" button
-# ---------------------------- TODO: PASSWORD GENERATOR LOGIC ------------------------------- #
-# TODO: implement a function responsible for creating a password with a preset strength
-window.eval('tk::PlaceWindow . center')
-window.mainloop()
+def entry_config():
+    WEB_ENTRY.config(width=37)
+    WEB_ENTRY.grid(column=1, row=1, columnspan=2)
+    PASSWORD_ENTRY.config(width=21)
+    PASSWORD_ENTRY.grid(column=1, row=3)
+    USERNAME_ENTRY.config(width=37)
+    # at the start the program automatically starts the input at the username
+    USERNAME_ENTRY.focus()
+    USERNAME_ENTRY.grid(column=1, row=2, columnspan=2)
+
+
+def main():
+    window = Tk()
+    window.title(WINDOW_NAME)
+    window.config(padx=20, pady=20)
+    # canvas for the logo
+    canvas = Canvas(width=200, height=200)
+    # logo to the window
+    logo = PhotoImage(file="img/logo.png")
+    canvas.create_image(75, 100, image=logo)
+    # canvas.config(bg="blue")
+    canvas.grid(column=1, row=0, columnspan=2)
+    # labels found on the main window
+    main_window_labels()
+    # objects for the website, username and password that will be used to save the info
+    global WEB_ENTRY, USERNAME_ENTRY, PASSWORD_ENTRY
+    WEB_ENTRY = Entry()
+    USERNAME_ENTRY = Entry()
+    PASSWORD_ENTRY = Entry()
+    # configure the location of entries in the
+    entry_config()
+    # function call for the "add" a button
+    write_buttton()
+    # function call for generate__button
+    generate__button()
+    # center the window upon opening
+    window.eval('tk::PlaceWindow . center')
+    # loop the main window to stay open
+    window.mainloop()
+
+
+if __name__ == "__main__":
+    main()
