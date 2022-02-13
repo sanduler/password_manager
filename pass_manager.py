@@ -26,7 +26,7 @@ def save():
         website_string: {
             "email": username_string,
             "password": password_string
-    }}
+        }}
     if len(website_string) != 0 and len(username_string) != 0 and len(password_string) != 0:
         tkinter.messagebox.askokcancel(message=f"These are the details entered: "
                                                f"\nUsername: {username_string}\nPassword: {password_string}")
@@ -54,6 +54,17 @@ def save():
     clear_entry()
 
 
+def find_password():
+    website = WEB_ENTRY.get()
+    opened_file = open("data/password_data.json", "r")
+    data = json.load(opened_file)
+    if website in data:
+        email = data[website]["email"]
+        password = data[website]["password"]
+        tkinter.messagebox.showinfo(title=website, message=f"Email: {email}\nPassword: {password}")
+
+
+
 def generate__button():
     # create the button for generating a password
     generate_button = Button(text="Generate Password", command=lambda: generate_password(PASSWORD_ENTRY))
@@ -68,6 +79,13 @@ def write_buttton():
     add_button.grid(column=1, row=4, columnspan=2)
 
 
+def search_buttton():
+    """a button on the bottom to search the password externally --> if possible to text"""
+    add_button = Button(text="Search", command=find_password)
+    add_button.config(width=11, pady=0)
+    add_button.grid(column=2, row=1)
+
+
 def main_window_labels():
     web_label = Label(text="Website:")
     web_label.grid(column=0, row=1)
@@ -78,8 +96,8 @@ def main_window_labels():
 
 
 def entry_config():
-    WEB_ENTRY.config(width=37)
-    WEB_ENTRY.grid(column=1, row=1, columnspan=2)
+    WEB_ENTRY.config(width=21)
+    WEB_ENTRY.grid(column=1, row=1)
     PASSWORD_ENTRY.config(width=21)
     PASSWORD_ENTRY.grid(column=1, row=3)
     USERNAME_ENTRY.config(width=37)
@@ -112,6 +130,8 @@ def main():
     write_buttton()
     # function call for generate__button
     generate__button()
+    # function call for generate__button
+    search_buttton()
     # center the window upon opening
     window.eval('tk::PlaceWindow . center')
     # loop the main window to stay open
