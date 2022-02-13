@@ -25,10 +25,14 @@ to generate secure passwords.
 
 ## Screenshots
 
-![App Screenshot](img/img1.png)
+![App Screenshot](img/img0.png)
+--------------------------------
 ![App Screenshot](img/img2.png)
+--------------------------------
 ![App Screenshot](img/img3.png)
+--------------------------------
 ![App Screenshot](img/img4.png)
+--------------------------------
 ![App Screenshot](img/img5.png)
 
 
