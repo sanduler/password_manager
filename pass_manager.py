@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter.messagebox
 from generate_password import generate_password
+import json
 
 # Name: Ruben Sanduleac
 # Description:
@@ -21,11 +22,26 @@ def save():
     password_string = PASSWORD_ENTRY.get()
     username_string = USERNAME_ENTRY.get()
     website_string = WEB_ENTRY.get()
+    new_data = {
+        website_string: {
+            "email": username_string,
+            "password": password_string
+    }}
     if len(website_string) != 0 and len(username_string) != 0 and len(password_string) != 0:
         tkinter.messagebox.askokcancel(message=f"These are the details entered: "
                                                f"\nUsername: {username_string}\nPassword: {password_string}")
-        file = open("data/passwords.txt", "a")
-        file.write(f" {website_string} | {username_string} | {password_string}\n")
+
+        file = open("data/password_data.json", "r")
+        # reading old data
+        data = json.load(file)
+        # updating old data with new data
+        data.update(new_data)
+        # we close the file
+        file.close()
+        file = open("data/password_data.json", "w")
+        # we dump/save the new data
+        json.dump(data, file, indent=4)
+        # we close the file
         file.close()
         tkinter.messagebox.showinfo(message=f"Password for {website_string} was saved.")
     else:
