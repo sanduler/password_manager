@@ -3,7 +3,7 @@
 #              the main functions initializes all the labels, buttons and the canvas.
 #              The main window passes the web_entry, username and password.
 
-from window_ui import *
+from src.window_ui import *
 
 WINDOW_NAME = "Password Manager"
 
