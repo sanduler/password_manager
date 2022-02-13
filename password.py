@@ -1,5 +1,8 @@
 # Name: Ruben Sanduleac
-# Description:
+# Description: This list of helper functions are responsible for
+#              creating, reading, updating. and clearing the
+#              password field while also creating a json file
+#              used for saving the username, passwords.
 import pyperclip
 import json
 from tkinter import *
@@ -53,8 +56,7 @@ def find_password(web_entry):
     """[This function is linked and is called to from search_button.
         it is responsible for searching for the username and password
         for the specified web entry. if no web entry is not present the
-        function gives out an error. Finally, if there is no file the
-        function creates the file. If there is no detail in the database
+        function gives out an error. If there is no detail in the database
         then return.
             Args:
                 web_entry ([object]): [user entry for the website.]
@@ -64,47 +66,80 @@ def find_password(web_entry):
     try:
         opened_file = open("data/password_data.json", "r")
         data = json.load(opened_file)
+    # error if there is no data in the json
     except FileNotFoundError:
         messagebox.showwarning(title="Error", message="No data in file found!")
     else:
+        # logic used to display the username and password
         if website in data:
             email = data[website]["email"]
             password = data[website]["password"]
             messagebox.showinfo(title=website, message=f"Email: {email}\nPassword: {password}")
+        # error if there is no password or username based on the entry
         else:
             messagebox.showwarning(title="Error", message=f"No details for {website} exists.")
 
 
+def load_password_data(website_string, new_data):
+    """[This function uses the json library to open the password data
+        and if the file does not exist it writes a new file. Finally,
+        the function bumps and updates the data while providing the user
+        a popup confermation.
+                    Args:
+                        :param website_string:
+                        :param new_data:
+            """
+    try:
+        opened_file = open("data/password_data.json", "r")
+        data = json.load(opened_file)
+        # updating old data with new data
+    except FileNotFoundError:
+        opened_file = open("data/password_data.json", "w")
+        json.dump(new_data, opened_file, indent=4)
+    else:
+        data.update(new_data)
+        # we close the file
+        opened_file.close()
+        opened_file = open("data/password_data.json", "w")
+        # we dump/save the new data
+        json.dump(data, opened_file, indent=4)
+        # we close the file
+        opened_file.close()
+        messagebox.showinfo(message=f"Password for {website_string} was saved.")
+
+
 def save_password(web_entry, username_entry, password_entry):
+    """[This function is linked and is called to from search_button.
+            it is responsible for searching for the username and password
+            for the specified web entry. if no web entry is not present the
+            function gives out an error. If there is no detail in the database
+            then return.
+                Args:
+                    web_entry ([object]): [user entry for the website.]
+                    :param web_entry:
+                    :param password_entry:
+                    :param username_entry:
+
+                    calls: clear_password()
+        """
+    # sets the password entry from the user to the variables.
     password_string = password_entry.get()
     username_string = username_entry.get()
     website_string = web_entry.get()
+    # creates a new dictionary
     new_data = {
         website_string: {
             "email": username_string,
             "password": password_string
         }}
+    # checks to see the user entered information in all three fields.
+    # then the function provides the need confermation.
     if len(website_string) != 0 and len(username_string) != 0 and len(password_string) != 0:
         messagebox.askokcancel(message=f"These are the details entered: "
                                        f"\nUsername: {username_string}\nPassword: {password_string}")
-        try:
-            opened_file = open("data/password_data.json", "r")
-            data = json.load(opened_file)
-            # updating old data with new data
-        except FileNotFoundError:
-            opened_file = open("data/password_data.json", "w")
-            json.dump(new_data, opened_file, indent=4)
-        else:
-            data.update(new_data)
-            # we close the file
-            opened_file.close()
-            opened_file = open("data/password_data.json", "w")
-            # we dump/save the new data
-            json.dump(data, opened_file, indent=4)
-            # we close the file
-            opened_file.close()
-            messagebox.showinfo(message=f"Password for {website_string} was saved.")
+        load_password_data(website_string, new_data)
     else:
         messagebox.showwarning(message="Please enter all the required information.")
 
+    # function call to clear the password entry
     clear_password(web_entry, username_entry, password_entry)
