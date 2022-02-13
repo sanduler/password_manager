@@ -30,19 +30,23 @@ def save():
     if len(website_string) != 0 and len(username_string) != 0 and len(password_string) != 0:
         tkinter.messagebox.askokcancel(message=f"These are the details entered: "
                                                f"\nUsername: {username_string}\nPassword: {password_string}")
+        try:
+            opened_file = open("data/password_data.json", "r")
+            data = json.load(opened_file)
+            # updating old data with new data
+        except FileNotFoundError:
+            opened_file = open("data/password_data.json", "w")
+            json.dump(new_data, opened_file, indent=4)
+        else:
+            data.update(new_data)
+            # we close the file
+            opened_file.close()
+            opened_file = open("data/password_data.json", "w")
+            # we dump/save the new data
+            json.dump(data, opened_file, indent=4)
+            # we close the file
+            opened_file.close()
 
-        file = open("data/password_data.json", "r")
-        # reading old data
-        data = json.load(file)
-        # updating old data with new data
-        data.update(new_data)
-        # we close the file
-        file.close()
-        file = open("data/password_data.json", "w")
-        # we dump/save the new data
-        json.dump(data, file, indent=4)
-        # we close the file
-        file.close()
         tkinter.messagebox.showinfo(message=f"Password for {website_string} was saved.")
     else:
         tkinter.messagebox.showwarning(message="Please enter all the required information.")
