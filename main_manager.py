@@ -32,7 +32,7 @@ def main():
     # configure the location of entries in the
     entry_config(web_entry, username_entry, password_entry)
     # function call for the "add" a button
-    write_buttton(web_entry, username_entry, password_entry)
+    write_button(web_entry, username_entry, password_entry)
     # function call for generate__button
     generate_button(password_entry)
     # function call for generate__button
